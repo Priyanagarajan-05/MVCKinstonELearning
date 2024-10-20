@@ -1,0 +1,47 @@
+﻿@model IEnumerable<coursemvc.Models.Course>
+
+@{
+    ViewData["Title"] = "My Courses";
+}
+
+<h2>My Courses</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Price</th>
+                <th>Status</th> <!-- Add a new header for Status -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.CourseName</td>
+                    <td>@course.Description</td>
+                    <td>@course.StartDate.ToShortDateString()</td>
+                    <td>@course.EndDate.ToShortDateString()</td>
+                    <td>@course.Price</td>
+                    <td>
+                        @{
+                            // Correctly check the IsAccount property
+                            string statusClass = course.IsAccount ? "text-success" : "text-danger"; // Class based on IsAccount
+                            string statusText = course.IsAccount ? "Accepted" : "Rejected"; // Text based on IsAccount
+                        }
+                        <span class="@statusClass">@statusText</span> <!-- Display the status with the appropriate class -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No courses to display.</p>
+}

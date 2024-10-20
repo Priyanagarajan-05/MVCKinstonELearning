@@ -1,0 +1,13 @@
+﻿@model coursemvc.Models.StudentCourse
+
+<h2>Course Completion Certificate</h2>
+<p>Certificate of Completion is awarded to:</p>
+<h3>@Model.Student.Name</h3>
+<p>For successfully completing the course:</p>
+<h3>@Model.Course.CourseName</h3>
+<p>Description: @Model.Course.Description</p>
+<p>Course Start Date: @Model.Course.StartDate.ToShortDateString()</p>
+<p>Course End Date: @Model.Course.EndDate.ToShortDateString()</p>
+<p>Date of Issuance: @ViewBag.CurrentDateTime.ToString("f")</p>
+
+<button onclick="window.print()">Print Certificate</button>

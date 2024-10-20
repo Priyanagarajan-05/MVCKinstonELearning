@@ -1,0 +1,79 @@
+﻿@model IEnumerable<coursemvc.Models.Course>
+
+@{
+    ViewData["Title"] = "Manage Courses";
+}
+
+<h2>Manage Courses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Description</th>
+            <th>Professor ID</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model.Where(c => c.IsAccount == false)) // Show only courses with IsAccount = 0
+        {
+            <tr>
+                <td>@course.CourseName</td>
+                <td>@course.Description</td>
+                <td>@course.ProfessorId</td>
+                <td>
+                    <button class="btn btn-success" onclick="acceptCourse(@course.CourseId)">Accept</button>
+                    <button class="btn btn-danger" onclick="rejectCourse(@course.CourseId)">Reject</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function acceptCourse(courseId) {
+            if (confirm("Are you sure you want to accept this course?")) {
+                fetch('@Url.Action("AcceptCourse", "Course")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ courseId: courseId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                    })
+                    .catch(error => {
+                        alert("Failed to accept course: " + error.message);
+                    });
+            }
+        }
+
+        function rejectCourse(courseId) {
+            if (confirm("Are you sure you want to reject this course?")) {
+                fetch('@Url.Action("RejectCourse", "Course")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ courseId: courseId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert("Failed to reject course.");
+                        }
+                    });
+            }
+        }
+    </script>
+}

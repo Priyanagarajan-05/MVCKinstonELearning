@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Professor Dashboard";
+}
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+
+
+<h2>Professor Dashboard</h2>
+
+<p>Welcome, @ViewBag.ProfessorName (@ViewBag.ProfessorEmail)!</p>
+<p>Your User ID: @Context.Session.GetString("UserId")</p> <!-- Display UserId -->
+
+<form asp-action="Logout" asp-controller="Professor" method="post" style="float:right;">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+
+<hr />
+
+<div>
+    <a asp-action="CreateCourse" class="btn btn-primary">Create Course</a>
+    <a asp-action="MyCourses" class="btn btn-secondary">My Courses</a>
+</div>

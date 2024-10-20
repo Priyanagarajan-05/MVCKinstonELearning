@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Kinston E University - Login";
+}
+
+<h1 class="text-center">Kinston E University</h1>
+
+<h2 class="text-center">Login</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger text-center">@ViewBag.Error</div>
+}
+
+<div class="login-container">
+    <form asp-action="Login" method="post" class="form-container">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+
+    <div class="text-center mt-3">
+        <a asp-action="Register" class="btn btn-secondary">Create New Account</a>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container {
+        padding: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .btn-secondary {
+        margin-top: 10px;
+    }
+
+    .alert {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .btn-block {
+        width: 100%;
+    }
+</style>

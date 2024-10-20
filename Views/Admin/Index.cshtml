@@ -1,0 +1,121 @@
+﻿﻿
+@model IEnumerable<coursemvc.Models.User>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+<form asp-action="Logout" asp-controller="User" method="post" style="float:right;">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+
+<h3>Manage Students</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Where(u => u.Role == "Student" && !u.IsActive))
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>
+                    <button class="btn btn-success" onclick="acceptUser(@student.UserId)">Accept</button>
+                    <button class="btn btn-danger" onclick="rejectUser(@student.UserId)">Reject</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Manage Professors</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var professor in Model.Where(u => u.Role == "Professor" && !u.IsActive))
+        {
+            <tr>
+                <td>@professor.Name</td>
+                <td>@professor.Email</td>
+                <td>
+                    <button class="btn btn-success" onclick="acceptUser(@professor.UserId)">Accept</button>
+                    <button class="btn btn-danger" onclick="rejectUser(@professor.UserId)">Reject</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3><a href="@Url.Action("ManageCourses", "Course")">Manage Courses</a></h3>
+
+
+
+@section Scripts {
+    <script>
+        function acceptUser(userId) {
+            if (confirm("Are you sure you want to accept this user?")) {
+                fetch('@Url.Action("AcceptUser", "Admin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ userId: userId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                    })
+                    .catch(error => {
+                        alert("Failed to accept user: " + error.message);
+                    });
+            }
+        }
+
+
+        function rejectUser(userId) {
+            if (confirm("Are you sure you want to reject this user?")) {
+                fetch('@Url.Action("RejectUser", "Admin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ userId: userId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert("Failed to reject user.");
+                        }
+                    });
+            }
+        }
+    </script>
+}
+
+
+
+
